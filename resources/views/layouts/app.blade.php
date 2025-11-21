@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Teknologi Sawit</title>
+    <title>Admin Dashboard - Teknologi Sawit @yield('title')</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -147,108 +147,85 @@
             border-top: 1px solid #eee;
         }
 
-        /* --- START: CSS UNTUK KOTAK KOTAK STATISTIK --- */
-        .card-stat {
-            border-radius: 10px;
+        /* --- START: CSS UNTUK KOTAK KOTAK STATISTIK GUDANG (BARU) --- */
+        .card-stat-gudang {
+            border-radius: 12px;
             color: white;
-            text-align: center;
-            padding: 20px 0;
+            text-align: left;
+            padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease-in-out;
             position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .card-stat:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        .card-stat-gudang:hover {
+            transform: translateY(-7px) scale(1.01);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
-        .card-stat h5 {
-            font-weight: 600;
-            opacity: 0.8;
-            margin-bottom: 0.5rem;
+        .card-stat-gudang h5 {
+            font-weight: 700;
+            opacity: 0.95;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
         }
 
-        .card-stat p {
+        .card-stat-gudang p {
             color: white;
             font-weight: 900;
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-top: 0;
             margin-bottom: 0;
+            line-height: 1;
         }
 
-        .card-orange {
-            background: linear-gradient(45deg, var(--primary-orange), #ff8c00);
+        .card-stat-gudang .icon-bg {
+            position: absolute;
+            right: -15px;
+            bottom: -15px;
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.2);
+            z-index: 1;
+            transform: rotate(-15deg);
+            pointer-events: none;
         }
 
-        .card-yellow {
-            background: linear-gradient(45deg, #ffc107, #ffab00);
+        /* Warna Gradien Baru */
+        .card-gradient-green {
+            background: linear-gradient(45deg, #28a745, #218838); /* Hijau */
+        }
+        .card-gradient-red {
+            background: linear-gradient(45deg, #dc3545, #c82333); /* Merah */
+        }
+        .card-gradient-blue {
+            background: linear-gradient(45deg, #007bff, #0056b3); /* Biru */
         }
 
-        .card-green {
-            background: linear-gradient(45deg, #28a745, #15a05b);
-        }
-
-        .notification-list, .activity-list {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 1rem;
-        }
-        .notification-list li, .activity-list li {
-            padding: 10px 15px;
-            border-bottom: 1px solid #eee;
-            background-color: white;
-            margin-bottom: 5px;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        /* --- END: CSS UNTUK KOTAK KOTAK STATISTIK --- */
+        /* --- END: CSS UNTUK KOTAK KOTAK STATISTIK GUDANG --- */
     </style>
     @stack('styles')
 </head>
 
 <body>
-    <div class="sidebar">
-        <h4><i class="bi bi-fan me-2"></i> HaiSawit Admin</h4>
-        <ul>
-            <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><i class="bi bi-people"></i> Manajemen Pengguna</a></li>
-            <li><a href="{{ route('admin.articles.index') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}"><i class="bi bi-journal-text"></i> Manajemen Artikel</a></li>
-            <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="bi bi-tags"></i> Kategori & Tag</a></li>
-            <li><a href="{{ route('admin.comments') }}" class="{{ request()->routeIs('admin.comments') ? 'active' : '' }}"><i class="bi bi-chat-dots"></i> Komentar</a></li>
-            <li><a href="{{ route('admin.settings') }}" class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}"><i class="bi bi-gear"></i> Pengaturan Situs</a></li>
-            <li><a href="{{ route('admin.reports') }}" class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}"><i class="bi bi-graph-up"></i> Laporan & Log</a></li>
-        </ul>
-
-        <form method="POST" action="{{ route('admin.logout') }}" class="d-grid gap-2 mt-5" style="padding: 0 25px;">
-            @csrf
-            <button type="submit" class="btn btn-outline-light btn-sm fw-bold">
-                 <i class="bi bi-box-arrow-right"></i> Logout
-            </button>
-        </form>
-    </div>
+    {{-- Memanggil sidebar.blade.php --}}
+    @include('layouts.sidebar')
 
     <div class="main-content">
-        <div class="topbar">
-            <h5>Panel Administrasi</h5>
-            <form method="POST" action="{{ route('admin.logout') }}">
-                @csrf
-                {{-- PERBAIKAN DI SINI: Mengganti teks 'Pretti' dengan session('admin_username') --}}
-                <button type="submit" class="logout-button">
-                    <i class="bi bi-person-circle me-1"></i> {{ session('admin_username') ?? 'Guest' }} (Admin)
-                </button>
-            </form>
-        </div>
+        {{-- Memanggil topbar.blade.php --}}
+        @include('layouts.topbar')
 
         <div class="dashboard-body">
+            {{-- Konten dari view lain (e.g., admin.dashboard-admin.blade.php) masuk di sini --}}
             @yield('content')
         </div>
 
-        <div class="footer-admin">
-            &copy; {{ date('Y') }} Teknologi Sawit. Hak Cipta Dilindungi.
-        </div>
+        {{-- Memanggil footer.blade.php --}}
+        @include('layouts.footer')
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

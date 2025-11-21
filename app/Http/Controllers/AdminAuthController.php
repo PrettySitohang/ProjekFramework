@@ -11,8 +11,8 @@ class UserRepository
 {
     // Mengubah users menjadi non-static agar bisa diubah (meskipun ini tidak ideal untuk PHP, ini untuk simulasi)
     private static $users = [
-        ['username' => 'pretty', 'password' => 'Admin1', 'name' => 'Pretty'],
-        ['username' => 'mei', 'password' => 'Admin2', 'name' => 'Mei'],
+        ['username' => 'pretty', 'password' => 'Admin1', 'name' => 'Pretty', 'role' => 'admin'],
+        ['username' => 'mei', 'password' => 'Admin2', 'name' => 'Mei', 'role' => 'writer'],
     ];
 
     public static function findByUsername($username)
@@ -50,7 +50,7 @@ class AdminAuthController extends Controller
 
     public function showLoginForm()
     {
-        return view('login-admin');
+        return view('admin.login-admin');
     }
 
     public function login(Request $request)

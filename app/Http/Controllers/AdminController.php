@@ -32,6 +32,6 @@ class AdminController extends Controller
             'Admin C mempublikasikan artikel baru.',
         ];
 
-        return view('dashboard-admin', compact('stats', 'notifications', 'recentActivities'));
+        return view('admin.dashboard-admin', compact('stats', 'notifications', 'recentActivities'));
     }
 }

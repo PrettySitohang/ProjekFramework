@@ -1,12 +1,6 @@
-@extends('layouts-admin')
 
-{{--
-    Catatan:
-    1. Kode ini mengasumsikan 'layouts-admin' sudah memuat Bootstrap (atau framework CSS serupa).
-    2. Grafik menggunakan pustaka Chart.js yang dimuat melalui CDN.
-    3. Variabel $adminUsername (dari AdminDashboardController) akan digunakan di layout utama (jika ada).
-    4. Sesi Flash 'success' akan ditampilkan di sini.
---}}
+@extends('layouts.app')
+
 
 @section('content')
 
@@ -19,7 +13,7 @@
     @endif
 
     <h2 class="mt-2">Selamat Datang, <b>Admin!</b></h2>
-    <p class="text-muted">Kelola konten dan fungsionalitas Teknologi Sawit** dengan mudah di sini.</p>
+    <p class="text-muted">Kelola konten dan fungsionalitas Teknologi Sawit dengan mudah di sini.</p>
     <hr>
 
     <h4>Ringkasan Situs</h4>
@@ -93,14 +87,21 @@
         </div>
     </div>
 
+    {{-- **FITUR BARU: FLOATING WHATSAPP BUTTON** --}}
+    {{-- Ganti '6281234567890' dengan nomor WhatsApp Anda (tanpa tanda '+', dengan kode negara) --}}
+    <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20punya%20pertanyaan%20tentang%20dashboard%20artikel." class="whatsapp-float" target="_blank">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
 @endsection
 
 {{--
-    Bagian CSS untuk Card Kustom
-    Biasanya ini diletakkan di file CSS eksternal atau di layout utama
+    Bagian CSS untuk Card Kustom dan Floating WhatsApp Button
+    Bootstrap Icons (bi bi-whatsapp) diasumsikan tersedia.
 --}}
 @push('styles')
 <style>
+    /* CSS untuk Card Stat */
     .card-stat {
         color: white;
         border: none;
@@ -128,6 +129,38 @@
     }
     .notification-list .bi-bell-fill, .activity-list .bi-check-circle-fill {
         font-size: 1.2rem;
+    }
+
+    /* **CSS untuk Floating WhatsApp Button** */
+    .whatsapp-float {
+        position: fixed; /* Menetapkan posisi tetap di layar */
+        width: 60px;
+        height: 60px;
+        bottom: 40px; /* Jarak dari bawah */
+        right: 40px; /* Jarak dari kanan */
+        background-color: #25d366; /* Warna khas WhatsApp */
+        color: #fff;
+        border-radius: 50px; /* Membuat bentuk lingkaran */
+        text-align: center;
+        font-size: 30px;
+        box-shadow: 2px 2px 3px #999;
+        z-index: 1000; /* Memastikan tombol di atas elemen lain */
+        display: flex; /* Untuk memposisikan ikon di tengah */
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .whatsapp-float:hover {
+        background-color: #128c7e;
+        color: #fff;
+        transform: scale(1.05);
+    }
+
+    /* Memastikan ikon WhatsApp cukup besar */
+    .whatsapp-float i {
+        font-size: 1.8rem;
     }
 </style>
 @endpush
