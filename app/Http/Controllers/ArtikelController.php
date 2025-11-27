@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Article;
-use Illuminate\Support\Str; // Untuk membuat slug
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth; // Untuk mendapatkan ID user yang login
-
+use Illuminate\Support\Facades\Auth; 
 class ArtikelController extends Controller
 {
     /**
-     * Index - Menampilkan daftar semua artikel (CRUD Read).
+     *
      * @return \Illuminate\View\View
      */
     public function index()
@@ -20,9 +19,7 @@ class ArtikelController extends Controller
         // Menggunakan with(['writer', 'editor']) untuk memuat relasi FK.
         $articles = Article::with(['writer', 'editor'])
                            ->orderBy('article_id', 'desc')
-                           ->paginate(12); // Menggunakan 12 untuk tampilan grid
-
-        // Menggunakan view yang telah kita sepakati sebelumnya
+                           ->paginate(12);
         return view('admin.articles.indeks', compact('articles'));
     }
 
@@ -33,9 +30,7 @@ class ArtikelController extends Controller
      */
     public function create()
     {
-        // Di sini Anda mungkin juga perlu mengambil Kategori dan Tag
-        // $categories = Category::all();
-        // return view('admin.articles.create', compact('categories'));
+
         return view('admin.articles.create');
     }
 

@@ -25,16 +25,16 @@
             opacity: 0.2;
             z-index: 0;
         }
-    .container {
-        position: relative;
-        display: flex;
-        width: 800px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        border-radius: 12px;
-        overflow: hidden;
-        background-color: #ffffff; /* Ubah dari rgba(255, 255, 255, 0.9) ke putih solid */
-        z-index: 1;
-    }
+        .container {
+            position: relative;
+            display: flex;
+            width: 800px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #ffffff;
+            z-index: 1;
+        }
 
         .left-panel {
             background-color: #FF9900;
@@ -74,7 +74,8 @@
             display: flex;
             flex-direction: column;
         }
-        input[type="text"], input[type="password"] {
+        /* Menggunakan type="email" untuk input email */
+        input[type="email"], input[type="password"] {
             padding: 12px 15px;
             margin-bottom: 20px;
             border: 2px solid #FF9900;
@@ -82,7 +83,7 @@
             font-size: 1rem;
             transition: border-color 0.3s ease;
         }
-        input[type="text"]:focus, input[type="password"]:focus {
+        input[type="email"]:focus, input[type="password"]:focus {
             border-color: #cc7a00;
             outline: none;
         }
@@ -96,7 +97,7 @@
             cursor: pointer;
             font-weight: 700;
             transition: background-color 0.3s ease;
-            margin-bottom: 15px; /* Tambahkan margin-bottom untuk memberi ruang pada teks Registrasi */
+            margin-bottom: 15px;
         }
         button:hover {
             background-color: #cc7a00;
@@ -119,16 +120,15 @@
         .forgot-password a:hover {
             text-decoration: underline;
         }
-        /* Gaya baru untuk prompt registrasi */
         .register-prompt {
             text-align: center;
             font-size: 0.95rem;
             color: #666;
-            margin-top: 10px; /* Tambahkan sedikit ruang di atas */
+            margin-top: 10px;
         }
         .register-prompt a {
-            color: #FF9900; /* Warna Oranye */
-            text-decoration: underline; /* Bergaris Bawah */
+            color: #FF9900;
+            text-decoration: underline;
             font-weight: 600;
             transition: color 0.3s;
         }
@@ -152,27 +152,57 @@
     <div class="container">
         <div class="left-panel">
             <h1>Selamat Datang!</h1>
-            <p>Kelola berita teknologi di bidang sawit dengan mudah dan cepat. Login sebagai admin untuk memulai.</p>
+            <p>Kelola berita teknologi di bidang sawit dengan mudah dan cepat. Login untuk memulai.</p>
         </div>
         <div class="right-panel">
-            <h2>Login Admin</h2>
+            <h2>Login Admin/Internal</h2>
+
+            @if ($errors->any())
+                <div class="error">
+                    <!-- Menampilkan semua error validasi -->
+                    @foreach ($errors->all() as $error)
+                        {{ $error }}<br>
+                    @endforeach
+                </div>
+            @endif
 
             @if(session('error'))
                 <div class="error">{{ session('error') }}</div>
             @endif
 
-            <form method="POST" action="{{ route('admin.login.submit') }}">
+            @if(session('success'))
+                <div style="color: green; margin-bottom: 15px; text-align: center;">{{ session('success') }}</div>
+            @endif
+
+            <form method="POST" action="{{ route('admin.login') }}">
                 @csrf
-                <input type="text" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
-                <input type="password" name="password" placeholder="Password" required>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Alamat Email"
+                    value="{{ old('email') }}"
+                    required
+                    autofocus
+                    autocomplete="email"
+                >
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                    autocomplete="current-password"
+                >
+
                 <div class="forgot-password">
                     <a href="#">Lupa password?</a>
                 </div>
                 <button type="submit">Login</button>
 
-                <!-- Prompt Registrasi -->
+                <!-- PERUBAHAN: Mengaktifkan link registrasi kembali -->
                 <div class="register-prompt">
-                    Belum punya akun? <a href="{{ route('admin.register.form') }}" target="_blank">registrasi</a> terlebih dahulu.
+                    Belum punya akun? <a href="{{ route('admin.register.form') }}">registrasi</a> terlebih dahulu.
                 </div>
             </form>
         </div>

@@ -8,7 +8,7 @@
         :root {
             --primary-orange: #FF9900;
             --secondary-orange: #cc7a00;
-            --background-soft: #f0f7f4;
+            --background-soft: #fff9f2; /* Mengubah background agar konsisten dengan login */
         }
         body {
             margin: 0;
@@ -19,12 +19,12 @@
             align-items: center;
             min-height: 100vh;
             position: relative;
-            overflow: auto; /* Mengubah overflow agar bisa scroll jika form panjang */
-            padding: 20px 0; /* Menambahkan padding agar tidak menempel di tepi */
+            overflow: auto;
+            padding: 20px 0;
         }
         body::before {
             content: "";
-            position: fixed; /* Menggunakan fixed agar latar tidak bergeser */
+            position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: url('https://png.pngtree.com/thumb_back/fh260/background/20240522/pngtree-aerial-view-oil-palm-estate-in-evening-image_15690592.jpg') no-repeat center center/cover;
             opacity: 0.2;
@@ -54,7 +54,8 @@
             display: block;
             color: #555;
         }
-        input[type="text"], input[type="password"], input[type="date"], textarea {
+        /* Penyesuaian input */
+        input[type="text"], input[type="password"], input[type="date"], input[type="email"] {
             width: 100%;
             padding: 12px 15px;
             margin-bottom: 20px;
@@ -63,9 +64,8 @@
             font-size: 1rem;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             box-sizing: border-box;
-            resize: vertical; /* Izinkan textarea diresize vertikal */
         }
-        input:focus, textarea:focus {
+        input:focus {
             border-color: var(--primary-orange);
             box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.2);
             outline: none;
@@ -115,7 +115,16 @@
 </head>
 <body>
     <div class="register-card">
-        <h2>Pendaftaran Admin</h2>
+        <h2>Pendaftaran Admin/Internal</h2>
+
+        @if ($errors->any())
+            <div class="error-message" style="text-align:center; margin-bottom: 20px;">
+                <!-- Tampilkan pesan error validasi -->
+                @foreach ($errors->all() as $error)
+                    {{ $error }}<br>
+                @endforeach
+            </div>
+        @endif
 
         @if (session('error'))
             <div class="error-message" style="text-align:center; margin-bottom: 20px;">
@@ -127,27 +136,21 @@
             @csrf
 
             <label for="name">Nama Lengkap</label>
-            <input type="text" id="name" name="name" placeholder="Nama Anda (tanpa angka)" value="{{ old('name') }}" required autofocus>
+            <input type="text" id="name" name="name" placeholder="Nama Anda" value="{{ old('name') }}" required autofocus>
             @error('name')<div class="error-message">{{ $message }}</div>@enderror
 
-            <label for="alamat">Alamat</label>
-            <textarea id="alamat" name="alamat" placeholder="Alamat lengkap (maks. 300 karakter)" required>{{ old('alamat') }}</textarea>
-            @error('alamat')<div class="error-message">{{ $message }}</div>@enderror
-
-            <label for="tanggal_lahir">Tanggal Lahir</label>
-            <input type="date" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required>
-            @error('tanggal_lahir')<div class="error-message">{{ $message }}</div>@enderror
-
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Username unik" value="{{ old('username') }}" required>
-            @error('username')<div class="error-message">{{ $message }}</div>@enderror
+            <!-- PENTING: Mengganti Username menjadi Email -->
+            <label for="email">Alamat Email</label>
+            <input type="email" id="email" name="email" placeholder="Email (Digunakan untuk Login)" value="{{ old('email') }}" required>
+            @error('email')<div class="error-message">{{ $message }}</div>@enderror
 
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Harus ada Kapital dan Angka" required>
+            <input type="password" id="password" name="password" placeholder="Minimal 8 karakter" required>
             @error('password')<div class="error-message">{{ $message }}</div>@enderror
 
-            <label for="confirm_password">Konfirmasi Password</label>
-            <input type="password" id="confirm_password" name="confirm_password" placeholder="Ulangi Password" required>
+            <!-- PENTING: Mengganti confirm_password menjadi password_confirmation -->
+            <label for="password_confirmation">Konfirmasi Password</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Ulangi Password" required>
 
             <button type="submit">Daftar Sekarang</button>
         </form>

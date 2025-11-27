@@ -8,12 +8,7 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        // --- PROTEKSI MANUAL TANPA MIDDLEWARE ---
-        if (!$request->session()->get('is_admin_logged_in')) {
-            return redirect()->route('admin.login');
-        }
-        // ----------------------------------------
-
+        
         $stats = [
             'articles' => 120,
             'active_users' => 15,
